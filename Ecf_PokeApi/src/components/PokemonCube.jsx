@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {View, StyleSheet, Text, Pressable, Image} from 'react-native';
-import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
-const PokemonCube = ({pokemon, navigation}) => {
-  const dispatch = useDispatch();
+const PokemonCube = ({pokemon, navigation}) => {  
 
   const [pokemonDetail, setPokemonDetail] = useState(null);
 
@@ -43,12 +41,12 @@ const PokemonCube = ({pokemon, navigation}) => {
   }, [pokemon])
 
 
-//   const redirect = (categorieInfos) => {    
-//     navigation.navigate("RecepiesList", categorieInfos)
-//   }
+  const redirect = (pokemon) => {    
+    navigation.navigate("DetailsPokemon", pokemon)
+  }
 
   return (
-    // <Pressable onPress={() => redirect(categorie)}>
+    <Pressable onPress={() => redirect(pokemonDetail)}>
       <View style={styles.cube}>
        {pokemonDetail && pokemonDetail.sprites && pokemonDetail.sprites.front_default ? (
         <Image style={styles.image} source={{uri: pokemonDetail.sprites.front_default}}/>
@@ -56,7 +54,7 @@ const PokemonCube = ({pokemon, navigation}) => {
         <Text style={styles.textNumber}>N° {pokemonDetail?.id} </Text>
         <Text style={styles.textCube}>{pokemon.name} </Text>        
       </View>
-    // </Pressable>
+    </Pressable>
   );
 };
 
