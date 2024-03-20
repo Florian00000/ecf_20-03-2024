@@ -40,7 +40,7 @@ const PokemonCube = ({pokemon, navigation}) => {
       setPokemonDetail(response.data)
     })
     .catch(error => console.error(error));
-  }, [])
+  }, [pokemon])
 
 
 //   const redirect = (categorieInfos) => {    
@@ -50,7 +50,9 @@ const PokemonCube = ({pokemon, navigation}) => {
   return (
     // <Pressable onPress={() => redirect(categorie)}>
       <View style={styles.cube}>
-        <Image style={styles.image} source={{uri: pokemonDetail?.sprites.front_default}}/>
+       {pokemonDetail && pokemonDetail.sprites && pokemonDetail.sprites.front_default ? (
+        <Image style={styles.image} source={{uri: pokemonDetail.sprites.front_default}}/>
+        ) : null}
         <Text style={styles.textNumber}>N° {pokemonDetail?.id} </Text>
         <Text style={styles.textCube}>{pokemon.name} </Text>        
       </View>
