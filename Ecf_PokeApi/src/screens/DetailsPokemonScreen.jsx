@@ -1,5 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import {View, StyleSheet, Text, Image, FlatList} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 const DetailsPokemonScreen = ({navigation, route}) => {
     const pokemon = route.params;
@@ -32,10 +33,13 @@ const DetailsPokemonScreen = ({navigation, route}) => {
                     <Text style={styles.textColor}>Défense-spéciale: {pokemon.stats[4].base_stat}</Text>
                     <Text style={styles.textColor}>Vitesse: {pokemon.stats[5].base_stat}</Text>
                 </View>
+                <View style={styles.catchPokemon}>
+                    <Icon name='catching-pokemon' color="black" size={50}/>
+                </View>
             </View>
             
         </View>
-    );
+    );  
 }
 
 const styles = StyleSheet.create({
@@ -76,6 +80,11 @@ const styles = StyleSheet.create({
     typeDisposition :{
         flexDirection: "row",
         marginVertical: 5
+    },
+    catchPokemon: { 
+        height: 250,     
+        marginLeft: "auto",
+        paddingTop: 190
     }
 })  
 
