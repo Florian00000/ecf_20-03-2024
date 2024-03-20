@@ -41,8 +41,9 @@ const PokemonCube = ({pokemon, navigation}) => {
   }, [pokemon])
 
 
-  const redirect = (pokemon) => {    
-    navigation.navigate("DetailsPokemon", pokemon)
+  const redirect = (pokemonDetail) => {
+    const details = {...pokemonDetail, url: pokemon.url}    
+    navigation.navigate("DetailsPokemon", details)
   }
 
   return (

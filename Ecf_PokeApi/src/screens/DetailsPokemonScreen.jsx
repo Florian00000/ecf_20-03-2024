@@ -1,15 +1,29 @@
 import React, { useLayoutEffect } from 'react';
-import {View, StyleSheet, Text, Image, FlatList} from 'react-native';
+import {View, StyleSheet, Text, Image, FlatList, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { useDispatch } from 'react-redux';
+import { addPokemon } from '../store/pokemonSlice';
 
 const DetailsPokemonScreen = ({navigation, route}) => {
     const pokemon = route.params;
+    const dispatch = useDispatch();
+    
 
     useLayoutEffect(() => {
         navigation.setOptions({title: pokemon.name})
     }, [])
 
-    console.log(pokemon.types);
+    const handleCollection = () => {
+        //Création d'un nouvel objet pour éviter d'envoyer trop d'info
+        const catchedPokemon = {
+            id:pokemon.id,
+            name: pokemon.name,
+            url: pokemon.url
+
+        }
+        console.log(catchedPokemon);
+        dispatch(addPokemon(catchedPokemon));
+    }
 
     return (
         <View style={styles.main}>
@@ -33,9 +47,9 @@ const DetailsPokemonScreen = ({navigation, route}) => {
                     <Text style={styles.textColor}>Défense-spéciale: {pokemon.stats[4].base_stat}</Text>
                     <Text style={styles.textColor}>Vitesse: {pokemon.stats[5].base_stat}</Text>
                 </View>
-                <View style={styles.catchPokemon}>
+                <Pressable style={styles.catchPokemon} onPress={handleCollection}>
                     <Icon name='catching-pokemon' color="black" size={50}/>
-                </View>
+                </Pressable>
             </View>
             
         </View>

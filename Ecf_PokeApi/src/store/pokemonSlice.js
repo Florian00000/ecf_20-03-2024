@@ -41,10 +41,13 @@ const pokemonSlice = createSlice({
     initialState: {
         pokemons: [],
         next: null,
-        previous: null
+        previous: null,
+        collection: [],
     },
     reducers: {
-
+        addPokemon: (state, action) => {
+            state.collection.push(action.payload)
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchListPokemons.fulfilled, (state, action) => {
@@ -54,7 +57,7 @@ const pokemonSlice = createSlice({
             // console.log(action.payload);
         });
         builder.addCase(fetchNextListPokemons.fulfilled, (state, action) => {
-            console.log(action.payload);
+            // console.log(action.payload);
             state.pokemons = action.payload.list;
             state.next = action.payload.next;
             state.previous = action.payload.previous;
@@ -62,4 +65,5 @@ const pokemonSlice = createSlice({
     }
 })
 
+export const { addPokemon} = pokemonSlice.actions;
 export default pokemonSlice.reducer;
