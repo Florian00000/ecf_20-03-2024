@@ -80,7 +80,8 @@ const pokemonSlice = createSlice({
         pokemons: [],
         next: null,
         previous: null,
-        filteredList: []
+        filteredList: [],
+        isPending: false,
     },
     reducers: {
         
@@ -99,8 +100,12 @@ const pokemonSlice = createSlice({
             state.previous = action.payload.previous;
         });
         builder.addCase(fetchSearchPokemon.fulfilled, (state, action) => {
+            state.isPending = false;
             state.filteredList = action.payload;
             // console.log(state.filteredList);
+        });
+        builder.addCase(fetchSearchPokemon.pending, (state, action) => {
+            state.isPending = true;
         })
     }
 })
