@@ -13,6 +13,7 @@ const Search = () => {
     }
 
     const handleSearch = () => {
+        console.log(inputText);
         dispatch(fetchSearchPokemon(inputText))
         setInputText("");
     }

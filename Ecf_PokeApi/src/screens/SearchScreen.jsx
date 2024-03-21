@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import {View, StyleSheet, FlatList, Text} from 'react-native';
 import Search from '../components/Search';
 import { useSelector } from 'react-redux';
 import PokemonCube from '../components/PokemonCube';
@@ -11,6 +11,7 @@ const SearchScreen = ({navigation}) => {
     return (
         <View>
             <Search/>
+            {!filteredList.length && <Text>Pas de résultltat pour votre recherche</Text>}
             <FlatList
             data={filteredList}
             renderItem={pokemon => (

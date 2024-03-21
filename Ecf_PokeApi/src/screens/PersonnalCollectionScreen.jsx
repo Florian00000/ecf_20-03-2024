@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {View, StyleSheet, Text, FlatList} from 'react-native';
-import { useSelector } from 'react-redux';
 import PokemonCube from '../components/PokemonCube';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
-const PersonnalCollectionScreen = ({navigation}) => {
-    // const collection = useSelector((state) => state.pokemon.collection)
+const PersonnalCollectionScreen = ({navigation}) => {    
     const [collection, setCollection] = useState([]); 
 
     const getCollection = async () => {
@@ -33,8 +31,6 @@ const PersonnalCollectionScreen = ({navigation}) => {
             getCollection();
         })
     )
-
-    console.log(collection);
 
     return (
         <View>            

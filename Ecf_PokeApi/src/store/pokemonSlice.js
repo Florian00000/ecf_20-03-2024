@@ -38,18 +38,37 @@ export const fetchNextListPokemons = createAsyncThunk("pokemons/fetchNextListPok
 
 export const fetchSearchPokemon = createAsyncThunk("pokemons/fetchSearchPokemon", async (value) => {
     //On recherche si il s'agit d'un pokemon unique       
-    const response = await axios.get(`${BASE_URL}pokemon/${value}`);
-    const data = await response.data;
     const pokemons = [];
+    try {
+        const response = await axios.get(`${BASE_URL}pokemon/${value}`);
+        const data = await response.data;
+        
+        if (data) {
+            // console.log(data);
+            const pokemon = {
+                name: data.name,
+                url: `${BASE_URL}pokemon/${data.id}`
+            }
+            console.log(pokemon);
+            pokemons.push(pokemon)
+        }        
+    } catch (error) {
+        console.log("Erreur lors de la recherche par nom:", error);
+    }
+
+    //On recherche ensuite par type
+    try {
+        const reponseType = await axios.get(`${BASE_URL}type/${value}/`)    
+        const dataType = await reponseType.data;
+        console.log(dataType);
     
-    if (data) {
-        // console.log(data);
-        const pokemon = {
-            name: data.name,
-            url: `${BASE_URL}pokemon/${data.id}`
-        }
-        // console.log(pokemon);
-        pokemons.push(pokemon)
+        if (dataType) {
+            for (const poke of dataType.pokemon) {
+                pokemons.push(poke.pokemon)
+            }
+        }        
+    } catch (error) {
+        console.log("Erreur lors de la recherche par type:", error);
     }
 
     return pokemons
@@ -61,18 +80,10 @@ const pokemonSlice = createSlice({
         pokemons: [],
         next: null,
         previous: null,
-        // collection: [],
         filteredList: []
     },
     reducers: {
-        // addPokemon: (state, action) => {            
-        //     const isCollected = state.collection.some(poke => poke.id === action.payload.id)
-        //     if (isCollected) {
-        //         state.collection = state.collection.filter(poke => poke.id !== action.payload.id)
-        //     }else{
-        //         state.collection.push(action.payload)
-        //     }
-        // }
+        
     },
     extraReducers: (builder) => {
         builder.addCase(fetchListPokemons.fulfilled, (state, action) => {
@@ -94,5 +105,4 @@ const pokemonSlice = createSlice({
     }
 })
 
-// export const { addPokemon} = pokemonSlice.actions;
 export default pokemonSlice.reducer;

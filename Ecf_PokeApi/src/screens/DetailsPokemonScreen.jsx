@@ -1,16 +1,12 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import {View, StyleSheet, Text, Image, FlatList, Pressable} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import { useDispatch, useSelector } from 'react-redux';
-import { addPokemon } from '../store/pokemonSlice';
+import {View, StyleSheet, Text, Image,Pressable} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DetailsPokemonScreen = ({navigation, route}) => {
-    const pokemon = route.params;    
-    const dispatch = useDispatch();
+    const pokemon = route.params;        
     const [isCatched, setIsCatched] = useState(false);
-    const [collection, setCollection] = useState([]);
-    // const collection = useSelector((state) => state.pokemon.collection);
+    const [collection, setCollection] = useState([]);    
 
     const getCollection = async () => {
         try {
@@ -39,7 +35,7 @@ const DetailsPokemonScreen = ({navigation, route}) => {
         getCollection();
     }, [])
     
-    console.log(collection);
+    // console.log(collection);
 
     const handleCollection = async () => {
         //Création d'un nouvel objet pour éviter d'envoyer trop d'info
@@ -66,8 +62,7 @@ const DetailsPokemonScreen = ({navigation, route}) => {
             setCollection(collectionUpdated);
         } catch (error) {
             console.log(error)
-        }
-        // dispatch(addPokemon(catchedPokemon));
+        }        
     }
 
     return (
