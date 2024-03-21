@@ -9,6 +9,8 @@ import DetailsPokemonScreen from './src/screens/DetailsPokemonScreen';
 import { Provider } from 'react-redux';
 import { store } from './src/store/store';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Icon2 from 'react-native-vector-icons/Ionicons';
+import SearchScreen from './src/screens/SearchScreen';
 
 const App = () => {
   const Tab = createBottomTabNavigator();
@@ -30,6 +32,10 @@ const App = () => {
                 <Tab.Screen name="Home" component={MyStackNavigator} options={{headerShown: false,
                 tabBarIcon: () => (<Icon name='home-circle' size={25} color={"black"}/>),
                 tabBarLabel: "Accueil"
+                }}/>
+                <Tab.Screen name="Search" component={SearchScreen} options={{headerShown: false,
+                tabBarIcon: () => (<Icon2 name='search' size={25} color={"black"}/>),
+                tabBarLabel: "Rechercher"
                 }}/>
                 <Tab.Screen name="CollectionScreen" component={PersonnalCollectionScreen} options={{
                   title: "Collection",

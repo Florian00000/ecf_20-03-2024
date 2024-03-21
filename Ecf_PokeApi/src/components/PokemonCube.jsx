@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const PokemonCube = ({pokemon, navigation}) => {  
 
+  // console.log(pokemon);
+
   const [pokemonDetail, setPokemonDetail] = useState(null);
 
   const styles = StyleSheet.create({

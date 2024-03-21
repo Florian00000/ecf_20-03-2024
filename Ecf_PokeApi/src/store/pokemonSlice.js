@@ -36,6 +36,25 @@ export const fetchNextListPokemons = createAsyncThunk("pokemons/fetchNextListPok
     return pokemons
 })
 
+export const fetchSearchPokemon = createAsyncThunk("pokemons/fetchSearchPokemon", async (value) => {
+    //On recherche si il s'agit d'un pokemon unique       
+    const response = await axios.get(`${BASE_URL}pokemon/${value}`);
+    const data = await response.data;
+    const pokemons = [];
+    
+    if (data) {
+        // console.log(data);
+        const pokemon = {
+            name: data.name,
+            url: `${BASE_URL}pokemon/${data.id}`
+        }
+        // console.log(pokemon);
+        pokemons.push(pokemon)
+    }
+
+    return pokemons
+})
+
 const pokemonSlice = createSlice({
     name: "pokemon",
     initialState: {
@@ -43,6 +62,7 @@ const pokemonSlice = createSlice({
         next: null,
         previous: null,
         collection: [],
+        filteredList: []
     },
     reducers: {
         addPokemon: (state, action) => {            
@@ -66,6 +86,10 @@ const pokemonSlice = createSlice({
             state.pokemons = action.payload.list;
             state.next = action.payload.next;
             state.previous = action.payload.previous;
+        });
+        builder.addCase(fetchSearchPokemon.fulfilled, (state, action) => {
+            state.filteredList = action.payload;
+            // console.log(state.filteredList);
         })
     }
 })
