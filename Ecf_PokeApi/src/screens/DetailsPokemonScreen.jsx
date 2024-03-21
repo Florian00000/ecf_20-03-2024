@@ -3,27 +3,45 @@ import {View, StyleSheet, Text, Image, FlatList, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useDispatch, useSelector } from 'react-redux';
 import { addPokemon } from '../store/pokemonSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DetailsPokemonScreen = ({navigation, route}) => {
-    const pokemon = route.params;
+    const pokemon = route.params;    
     const dispatch = useDispatch();
     const [isCatched, setIsCatched] = useState(false);
-    const collection = useSelector((state) => state.pokemon.collection);
+    const [collection, setCollection] = useState([]);
+    // const collection = useSelector((state) => state.pokemon.collection);
+
+    const getCollection = async () => {
+        try {
+            const value = await AsyncStorage.getItem('collection');
+            const tabCollection = await JSON.parse(value);
+            if (value !== null) {
+                setCollection(JSON.parse(value))
+            } else {
+                await AsyncStorage.setItem("collection", JSON.stringify([]))               
+            }
+            const isCollected = tabCollection.some(poke => poke.id === pokemon.id)
+            if (isCollected) {
+                setIsCatched(true)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
     
 
     useLayoutEffect(() => {
         navigation.setOptions({title: pokemon.name})
     }, [])
-
+    
     useEffect(() => {
-        const isCollected = collection.some(poke => poke.id === pokemon.id)
-        if (isCollected) {
-            setIsCatched(true)
-        }
+        getCollection();
     }, [])
     
+    console.log(collection);
 
-    const handleCollection = () => {
+    const handleCollection = async () => {
         //Création d'un nouvel objet pour éviter d'envoyer trop d'info
         const catchedPokemon = {
             id:pokemon.id,
@@ -32,8 +50,24 @@ const DetailsPokemonScreen = ({navigation, route}) => {
 
         }
         setIsCatched(!isCatched);
-        console.log(catchedPokemon);
-        dispatch(addPokemon(catchedPokemon));
+        // console.log(catchedPokemon);
+        try {
+            let collectionUpdated = [...collection];
+            const isCollected = collectionUpdated.some(poke => poke.id === pokemon.id)
+            if (isCollected) {
+                collectionUpdated = collectionUpdated.filter(poke => poke.id !== pokemon.id)
+                setIsCatched(false);
+            }else {
+                collectionUpdated.push(catchedPokemon);
+                setIsCatched(true);
+            }
+            // console.log(collectionUpdated);
+            await AsyncStorage.setItem("collection", JSON.stringify(collectionUpdated));
+            setCollection(collectionUpdated);
+        } catch (error) {
+            console.log(error)
+        }
+        // dispatch(addPokemon(catchedPokemon));
     }
 
     return (
