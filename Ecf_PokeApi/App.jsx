@@ -32,7 +32,7 @@ const App = () => {
                 tabBarLabel: "Accueil"
                 }}/>
                 <Tab.Screen name="CollectionScreen" component={PersonnalCollectionScreen} options={{
-                  headerShown: false,
+                  title: "Collection",
                   tabBarIcon: () => (<Icon name='pokeball' size={25} color={"black"}/>),
                   tabBarLabel: "Collection"
                   }}/>

@@ -9,8 +9,7 @@ const PersonnalCollectionScreen = ({navigation}) => {
     console.log(collection);
 
     return (
-        <View>
-            <Text>Collecion</Text>
+        <View>            
             <FlatList
             data={collection}
             renderItem={pokemon => (
@@ -26,6 +25,8 @@ const PersonnalCollectionScreen = ({navigation}) => {
     );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+   
+})
 
 export default PersonnalCollectionScreen;

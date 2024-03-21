@@ -45,8 +45,13 @@ const pokemonSlice = createSlice({
         collection: [],
     },
     reducers: {
-        addPokemon: (state, action) => {
-            state.collection.push(action.payload)
+        addPokemon: (state, action) => {            
+            const isCollected = state.collection.some(poke => poke.id === action.payload.id)
+            if (isCollected) {
+                state.collection = state.collection.filter(poke => poke.id !== action.payload.id)
+            }else{
+                state.collection.push(action.payload)
+            }
         }
     },
     extraReducers: (builder) => {

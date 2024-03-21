@@ -1,17 +1,27 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {View, StyleSheet, Text, Image, FlatList, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addPokemon } from '../store/pokemonSlice';
 
 const DetailsPokemonScreen = ({navigation, route}) => {
     const pokemon = route.params;
     const dispatch = useDispatch();
+    const [isCatched, setIsCatched] = useState(false);
+    const collection = useSelector((state) => state.pokemon.collection);
     
 
     useLayoutEffect(() => {
         navigation.setOptions({title: pokemon.name})
     }, [])
+
+    useEffect(() => {
+        const isCollected = collection.some(poke => poke.id === pokemon.id)
+        if (isCollected) {
+            setIsCatched(true)
+        }
+    }, [])
+    
 
     const handleCollection = () => {
         //Création d'un nouvel objet pour éviter d'envoyer trop d'info
@@ -21,13 +31,14 @@ const DetailsPokemonScreen = ({navigation, route}) => {
             url: pokemon.url
 
         }
+        setIsCatched(!isCatched);
         console.log(catchedPokemon);
         dispatch(addPokemon(catchedPokemon));
     }
 
     return (
         <View style={styles.main}>
-            <Image style={styles.image} source={{uri: pokemon.sprites.front_default}}/>
+            <Image style={styles.image} source={{uri: pokemon.sprites.other["official-artwork"].front_default}}/>
             <View style={styles.section}>
                 <View style={styles.mainInfo}>
                     <Text style={[styles.textColor, styles.textTitle]}>{pokemon.name}</Text>
@@ -47,8 +58,8 @@ const DetailsPokemonScreen = ({navigation, route}) => {
                     <Text style={styles.textColor}>Défense-spéciale: {pokemon.stats[4].base_stat}</Text>
                     <Text style={styles.textColor}>Vitesse: {pokemon.stats[5].base_stat}</Text>
                 </View>
-                <Pressable style={styles.catchPokemon} onPress={handleCollection}>
-                    <Icon name='catching-pokemon' color="black" size={50}/>
+                <Pressable style={styles.catchPokemon  } onPress={handleCollection}>
+                    <Icon name='catching-pokemon' color={isCatched? "black": "white"} size={50}/>
                 </Pressable>
             </View>
             
@@ -99,7 +110,7 @@ const styles = StyleSheet.create({
         height: 250,     
         marginLeft: "auto",
         paddingTop: 190
-    }
+    }   
 })  
 
 export default DetailsPokemonScreen;
